@@ -1,0 +1,26 @@
+---
+       - name: Install Apache 
+         apt: 
+           name: apache2, php7.4 , php-mysql, libapache2-mod-php 
+           state: present 
+         become: yes
+
+       - name: Change ownership of folder
+         ansible.builtin.file:
+                 path: /var/www/html
+                 state: directory
+                 recurse: yes
+                 owner: ubuntu
+                 group: ubuntu
+
+       - name: Move a simple index.html
+         ansible.builtin.copy: 
+           src: index.html
+           dest: /var/www/html/
+
+       - name: Restart Apache Service
+         ansible.builtin.service:
+                name: apache2
+                state: restarted
+         become: yes 
+
